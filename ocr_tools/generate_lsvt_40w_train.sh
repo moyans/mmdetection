@@ -1,0 +1,21 @@
+#!/bin/bash
+python generate_lsvt_40w_train.py --idx 0 --num 20 &
+python generate_lsvt_40w_train.py --idx 1 --num 20 &
+python generate_lsvt_40w_train.py --idx 2 --num 20 &
+python generate_lsvt_40w_train.py --idx 3 --num 20 &
+python generate_lsvt_40w_train.py --idx 4 --num 20 &
+python generate_lsvt_40w_train.py --idx 5 --num 20 &
+python generate_lsvt_40w_train.py --idx 6 --num 20 &
+python generate_lsvt_40w_train.py --idx 7 --num 20 &
+python generate_lsvt_40w_train.py --idx 8 --num 20 &
+python generate_lsvt_40w_train.py --idx 9 --num 20 &
+python generate_lsvt_40w_train.py --idx 10 --num 20 &
+python generate_lsvt_40w_train.py --idx 11 --num 20 &
+python generate_lsvt_40w_train.py --idx 12 --num 20 &
+python generate_lsvt_40w_train.py --idx 13 --num 20 &
+python generate_lsvt_40w_train.py --idx 14 --num 20 &
+python generate_lsvt_40w_train.py --idx 15 --num 20 &
+python generate_lsvt_40w_train.py --idx 16 --num 20 &
+python generate_lsvt_40w_train.py --idx 17 --num 20 &
+python generate_lsvt_40w_train.py --idx 18 --num 20 &
+python generate_lsvt_40w_train.py --idx 19 --num 20 &
