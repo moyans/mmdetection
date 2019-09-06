@@ -214,21 +214,21 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
-        ann_file=data_root + 'ReCTS/rects_train.json',
-        img_prefix=data_root + 'ReCTS/img',
+        ann_file=data_root + 'DAS/ocr_das_train.json',
+        img_prefix=data_root + 'DAS/train_image_and_gt/image',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'ReCTS/rects_val.json',
-        img_prefix=data_root + 'ReCTS/img',
+        ann_file=data_root + 'DAS/ocr_das_test.json',
+        img_prefix=data_root + 'DAS/test_image_and_gt/image',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'ReCTS/rects_val.json',
-        img_prefix=data_root + 'ReCTS/img',
+        ann_file=data_root + 'DAS/ocr_das_test.json',
+        img_prefix=data_root + 'DAS/test_image_and_gt/image',
         pipeline=test_pipeline))
 # optimizer
-optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001) # lr=0.0025 lr=0.02
+optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001) # lr=0.0025 lr=0.02
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
@@ -250,7 +250,7 @@ log_config = dict(
 total_epochs = 12
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_1x_rect'
-load_from = './work_dirs/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_20e_rects_epoch_20.pth'
+work_dir = './work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_1x_das'
+load_from = None
 resume_from = None
 workflow = [('train', 1)]
