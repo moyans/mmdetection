@@ -236,7 +236,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=1.0 / 3,
-    step=[8, 11])
+    step=[16, 19])
 checkpoint_config = dict(interval=1)
 # yapf:disable
 log_config = dict(
@@ -247,10 +247,10 @@ log_config = dict(
     ])
 # yapf:enable
 # runtime settings
-total_epochs = 12
+total_epochs = 21
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_1x_rect'
-load_from = None #'./work_dirs/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_20e_rects_epoch_20.pth'
+work_dir = './work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect'
+load_from = None 
 resume_from = None
 workflow = [('train', 1)]
