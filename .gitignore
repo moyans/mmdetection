@@ -118,3 +118,8 @@ work_dirs/
 
 # Pytorch
 *.pth
+
+# Moyan
+*.jpg
+*.jpeg
+*.png
