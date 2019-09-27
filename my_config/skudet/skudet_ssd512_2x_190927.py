@@ -128,7 +128,7 @@ log_config = dict(
 total_epochs = 24
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/sku110k/skudet_ssd512_2x_190927'
+work_dir = './work_dirs/skudet/skudet_ssd512_2x_190927'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
