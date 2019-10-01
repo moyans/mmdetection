@@ -2,21 +2,16 @@
 model = dict(
     type='CascadeRCNN',
     num_stages=3,
-    pretrained='open-mmlab://resnext101_32x4d',
+    pretrained='torchvision://resnet101',
     backbone=dict(
-        type='ResNeXt',
+        type='ResNet',
         depth=101,
-	    groups=32,
-        base_width=4,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
         style='pytorch',
         dcn=dict(
-            modulated=False,
-            groups=32,
-            deformable_groups=1,
-            fallback_on_stride=False),
+            modulated=False, deformable_groups=1, fallback_on_stride=False),
         stage_with_dcn=(False, True, True, True)),
     neck=dict(
         type='FPN',
@@ -236,7 +231,7 @@ log_config = dict(
 total_epochs = 21
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/skudet/skudet_cascade_rcnn_dconv_c3-c5_resnext101_32x4d_fpn_multiscale_2x_190929'
+work_dir = './work_dirs/skudet/skudet_cascade_rcnn_dconv_c3-c5_r101_fpn_multiscale_2x_190929'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

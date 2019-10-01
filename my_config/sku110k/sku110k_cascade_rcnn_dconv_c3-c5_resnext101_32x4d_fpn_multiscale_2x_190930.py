@@ -200,18 +200,18 @@ data = dict(
     workers_per_gpu=1,
     train=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_SkuDetTrainSetData2019.json',
-        img_prefix=data_root + 'coco_SkuDetTrainSetData2019/',
+        ann_file=data_root + 'annotations/instances_SKU110kData2019.json',
+        img_prefix=data_root + 'coco_SKU110kData2019/',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_SkuDetData2019.json',
-        img_prefix=data_root + 'coco_SkuDet2019/',
+        ann_file=data_root + 'annotations/instances_SKU110kCheckData2019.json',
+        img_prefix=data_root + 'coco_SKU110kData2019/',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_SkuDetData2019.json',
-        img_prefix=data_root + 'coco_SkuDet2019/',
+        ann_file=data_root + 'annotations/instances_SKU110kCheckData2019.json',
+        img_prefix=data_root + 'coco_SKU110kData2019/',
         pipeline=test_pipeline))
 # optimizer
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
@@ -236,7 +236,7 @@ log_config = dict(
 total_epochs = 21
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/skudet/skudet_cascade_rcnn_dconv_c3-c5_resnext101_32x4d_fpn_multiscale_2x_190929'
+work_dir = './work_dirs/skudet/sku110k_cascade_rcnn_dconv_c3-c5_resnext101_32x4d_fpn_multiscale_2x_190930'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
