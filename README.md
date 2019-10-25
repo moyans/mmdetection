@@ -158,3 +158,35 @@ If you use this toolbox or benchmark in your research, please cite this project.
 ## Contact
 
 This repo is currently maintained by Kai Chen ([@hellock](http://github.com/hellock)), Jiangmiao Pang ([@OceanPang](https://github.com/OceanPang)), Jiaqi Wang ([@myownskyW7](https://github.com/myownskyW7)) and Yuhang Cao ([@yhcao6](https://github.com/yhcao6)).
+
+
+
+
+
+# single-gpu testing
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}] [--show]
+
+# multi-gpu testing
+./tools/dist_test.sh ${CONFIG_FILE} ${CHECKPOINT_FILE} ${GPU_NUM} [--out ${RESULT_FILE}] [--eval ${EVAL_METRICS}]
+
+Optional arguments:
+
+RESULT_FILE: Filename of the output results in pickle format. If not specified, the results will not be saved to a file.
+EVAL_METRICS: Items to be evaluated on the results. Allowed values are: proposal_fast, proposal, bbox, segm, keypoints.
+--show: If specified, detection results will be ploted on the images and shown in a new window. It is only applicable to single GPU testing. Please make sure that GUI is available in your environment, otherwise you may encounter the error like cannot connect to X server.
+Examples:
+
+Assume that you have already downloaded the checkpoints to checkpoints/.
+
+Test Faster R-CNN and show the results.
+python tools/test.py configs/faster_rcnn_r50_fpn_1x.py \
+    checkpoints/faster_rcnn_r50_fpn_1x_20181010-3d1b3351.pth \
+    --show
+Test Mask R-CNN and evaluate the bbox and mask AP.
+python tools/test.py configs/mask_rcnn_r50_fpn_1x.py \
+    checkpoints/mask_rcnn_r50_fpn_1x_20181010-069fa190.pth \
+    --out results.pkl --eval bbox segm
+Test Mask R-CNN with 8 GPUs, and evaluate the bbox and mask AP.
+./tools/dist_test.sh configs/mask_rcnn_r50_fpn_1x.py \
+    checkpoints/mask_rcnn_r50_fpn_1x_20181010-069fa190.pth \
+    8 --out results.pkl --eval bbox segm
