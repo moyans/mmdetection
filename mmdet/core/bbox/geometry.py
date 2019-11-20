@@ -26,12 +26,12 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
         # https://github.com/open-mmlab/mmdetection/issues/188
         bboxes1 = bboxes1.cpu().detach().numpy()
         bboxes2 = bboxes2.cpu().detach().numpy()
-        rows = bboxes1.shape(0)
-        cols = bboxes2.shape(0)
+        rows = len(bboxes1)
+        cols = len(bboxes2)
     else:
         rows = bboxes1.size(0)
         cols = bboxes2.size(0)
-        
+
     if is_aligned:
         assert rows == cols
 
