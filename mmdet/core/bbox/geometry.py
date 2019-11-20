@@ -21,6 +21,12 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
 
     assert mode in ['iou', 'iof']
 
+    SKUData = True
+    if SKUData:
+        # https://github.com/open-mmlab/mmdetection/issues/188
+        bboxes1 = bboxes1.cpu().detach().numpy()
+        bboxes2 = bboxes2.cpu().detach().numpy()
+
     rows = bboxes1.size(0)
     cols = bboxes2.size(0)
     if is_aligned:
@@ -30,8 +36,12 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
         return bboxes1.new(rows, 1) if is_aligned else bboxes1.new(rows, cols)
 
     if is_aligned:
-        lt = torch.max(bboxes1[:, :2], bboxes2[:, :2])  # [rows, 2]
-        rb = torch.min(bboxes1[:, 2:], bboxes2[:, 2:])  # [rows, 2]
+        if SKUData:
+            lt = np.maximum(bboxes1[:, :2], bboxes2[:, :2])
+            rb = np.minimum(bboxes1[:, 2:], bboxes2[:, 2:])
+        else:
+            lt = torch.max(bboxes1[:, :2], bboxes2[:, :2])  # [rows, 2]
+            rb = torch.min(bboxes1[:, 2:], bboxes2[:, 2:])  # [rows, 2]
 
         wh = (rb - lt + 1).clamp(min=0)  # [rows, 2]
         overlap = wh[:, 0] * wh[:, 1]
@@ -45,8 +55,12 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
         else:
             ious = overlap / area1
     else:
-        lt = torch.max(bboxes1[:, None, :2], bboxes2[:, :2])  # [rows, cols, 2]
-        rb = torch.min(bboxes1[:, None, 2:], bboxes2[:, 2:])  # [rows, cols, 2]
+        if SKUData:
+            lt = np.maximum(bboxes1[:, None, :2], bboxes2[:, :2])  # [rows, cols, 2]
+            rb = np.minimum(bboxes1[:, None, 2:], bboxes2[:, 2:])  # [rows, cols, 2]
+        else:
+            lt = torch.max(bboxes1[:, None, :2], bboxes2[:, :2])  # [rows, cols, 2]
+            rb = torch.min(bboxes1[:, None, 2:], bboxes2[:, 2:])  # [rows, cols, 2]
 
         wh = (rb - lt + 1).clamp(min=0)  # [rows, cols, 2]
         overlap = wh[:, :, 0] * wh[:, :, 1]
@@ -59,5 +73,8 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
             ious = overlap / (area1[:, None] + area2 - overlap)
         else:
             ious = overlap / (area1[:, None])
+
+    if SKUData:
+        ious = torch.from_numpy(ious).cuda()
 
     return ious

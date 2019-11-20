@@ -72,17 +72,21 @@ class MaxIoUAssigner(BaseAssigner):
         """
         if bboxes.shape[0] == 0 or gt_bboxes.shape[0] == 0:
             raise ValueError('No gt or bboxes')
-
-        # https://github.com/open-mmlab/mmdetection/pull/583
-        # move the assign operation to cpu
-        # use gt_bboxes nums set threshold, maybe 60 is ok?
-        if gt_bboxes.shape[0] > 60:
-            bboxes = bboxes.cpu()
-            gt_bboxes = gt_bboxes.cpu()
-            if gt_bboxes_ignore is not None:
-                gt_bboxes_ignore = gt_bboxes_ignore.cpu()
-            if gt_labels is not None:
-                gt_labels = gt_labels.cpu()
+        
+        
+        SKUData = False
+        # see is not this code occupied memory
+        if SKUData:
+            # https://github.com/open-mmlab/mmdetection/pull/583
+            # move the assign operation to cpu
+            # use gt_bboxes nums set threshold, maybe 60 is ok?
+            if gt_bboxes.shape[0] > 60:
+                bboxes = bboxes.cpu()
+                gt_bboxes = gt_bboxes.cpu()
+                if gt_bboxes_ignore is not None:
+                    gt_bboxes_ignore = gt_bboxes_ignore.cpu()
+                if gt_labels is not None:
+                    gt_labels = gt_labels.cpu()
 
         bboxes = bboxes[:, :4]
         overlaps = bbox_overlaps(gt_bboxes, bboxes)
@@ -101,12 +105,13 @@ class MaxIoUAssigner(BaseAssigner):
 
         assign_result = self.assign_wrt_overlaps(overlaps, gt_labels)
 
-        # https://github.com/open-mmlab/mmdetection/pull/583
-        # move the assign results back to cuda		
-        assign_result.gt_inds = assign_result.gt_inds.cuda()		
-        assign_result.max_overlaps = assign_result.max_overlaps.cuda()		
-        if assign_result.labels is not None:		
-            assign_result.labels = assign_result.labels.cuda()
+        if SKUData:
+            # https://github.com/open-mmlab/mmdetection/pull/583
+            # move the assign results back to cuda		
+            assign_result.gt_inds = assign_result.gt_inds.cuda()		
+            assign_result.max_overlaps = assign_result.max_overlaps.cuda()		
+            if assign_result.labels is not None:		
+                assign_result.labels = assign_result.labels.cuda()
 
         return assign_result
 
