@@ -1,5 +1,5 @@
 import torch
-import numpy as np
+
 
 def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
     """Calculate overlap between two set of bboxes.
@@ -21,17 +21,8 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
 
     assert mode in ['iou', 'iof']
 
-    SKUData = True
-    if SKUData:
-        # https://github.com/open-mmlab/mmdetection/issues/188
-        bboxes1 = bboxes1.cpu().detach().numpy()
-        bboxes2 = bboxes2.cpu().detach().numpy()
-        rows = len(bboxes1)
-        cols = len(bboxes2)
-    else:
-        rows = bboxes1.size(0)
-        cols = bboxes2.size(0)
-
+    rows = bboxes1.size(0)
+    cols = bboxes2.size(0)
     if is_aligned:
         assert rows == cols
 
@@ -39,12 +30,8 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
         return bboxes1.new(rows, 1) if is_aligned else bboxes1.new(rows, cols)
 
     if is_aligned:
-        if SKUData:
-            lt = np.maximum(bboxes1[:, :2], bboxes2[:, :2])
-            rb = np.minimum(bboxes1[:, 2:], bboxes2[:, 2:])
-        else:
-            lt = torch.max(bboxes1[:, :2], bboxes2[:, :2])  # [rows, 2]
-            rb = torch.min(bboxes1[:, 2:], bboxes2[:, 2:])  # [rows, 2]
+        lt = torch.max(bboxes1[:, :2], bboxes2[:, :2])  # [rows, 2]
+        rb = torch.min(bboxes1[:, 2:], bboxes2[:, 2:])  # [rows, 2]
 
         wh = (rb - lt + 1).clamp(min=0)  # [rows, 2]
         overlap = wh[:, 0] * wh[:, 1]
@@ -58,26 +45,46 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
         else:
             ious = overlap / area1
     else:
+
+        # fix the out of memory erro when gtbbox is too much 
+        # https://github.com/open-mmlab/mmdetection/issues/188
+        SKUData = True
         if SKUData:
-            lt = np.maximum(bboxes1[:, None, :2], bboxes2[:, :2])  # [rows, cols, 2]
-            rb = np.minimum(bboxes1[:, None, 2:], bboxes2[:, 2:])  # [rows, cols, 2]
+            bboxes1 = bboxes1.cpu().detach().numpy()
+            bboxes2 = bboxes2.cpu().detach().numpy()
+            tl = np.maximum(bboxes1[:, None, :2], bboxes2[:, :2])
+            br = np.minimum(bboxes1[:, None, 2:], bboxes2[:, 2:])
+            iw = (br - tl + 1)[:, :, 0]
+            ih = (br - tl + 1)[:, :, 1]
+            iw[iw < 0] = 0
+            ih[ih < 0] = 0
+            overlaps = iw * ih
+
+            area1 = (bboxes1[:, 2] - bboxes1[:, 0] + 1) * (
+                bboxes1[:, 3] - bboxes1[:, 1] + 1)
+
+            if mode == 'iou':
+                area2 = (bboxes2[:, 2] - bboxes2[:, 0] + 1) * (
+                    bboxes2[:, 3] - bboxes2[:, 1] + 1)
+                ious = overlaps / (area1[:, None] + area2 - overlaps)
+            else:
+                ious = overlaps / (area1[:, None])
+            ious = torch.from_numpy(ious).cuda()
         else:
+
             lt = torch.max(bboxes1[:, None, :2], bboxes2[:, :2])  # [rows, cols, 2]
             rb = torch.min(bboxes1[:, None, 2:], bboxes2[:, 2:])  # [rows, cols, 2]
 
-        wh = (rb - lt + 1).clamp(min=0)  # [rows, cols, 2]
-        overlap = wh[:, :, 0] * wh[:, :, 1]
-        area1 = (bboxes1[:, 2] - bboxes1[:, 0] + 1) * (
-            bboxes1[:, 3] - bboxes1[:, 1] + 1)
+            wh = (rb - lt + 1).clamp(min=0)  # [rows, cols, 2]
+            overlap = wh[:, :, 0] * wh[:, :, 1]
+            area1 = (bboxes1[:, 2] - bboxes1[:, 0] + 1) * (
+                bboxes1[:, 3] - bboxes1[:, 1] + 1)
 
-        if mode == 'iou':
-            area2 = (bboxes2[:, 2] - bboxes2[:, 0] + 1) * (
-                bboxes2[:, 3] - bboxes2[:, 1] + 1)
-            ious = overlap / (area1[:, None] + area2 - overlap)
-        else:
-            ious = overlap / (area1[:, None])
-
-    if SKUData:
-        ious = torch.from_numpy(ious).cuda()
+            if mode == 'iou':
+                area2 = (bboxes2[:, 2] - bboxes2[:, 0] + 1) * (
+                    bboxes2[:, 3] - bboxes2[:, 1] + 1)
+                ious = overlap / (area1[:, None] + area2 - overlap)
+            else:
+                ious = overlap / (area1[:, None])
 
     return ious
