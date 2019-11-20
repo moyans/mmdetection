@@ -48,7 +48,7 @@ def bbox_overlaps(bboxes1, bboxes2, mode='iou', is_aligned=False):
 
         # fix the out of memory erro when gtbbox is too much 
         # https://github.com/open-mmlab/mmdetection/issues/188
-        SKUData = True
+        SKUData = False
         if SKUData:
             bboxes1 = bboxes1.cpu().detach().numpy()
             bboxes2 = bboxes2.cpu().detach().numpy()
