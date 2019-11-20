@@ -72,10 +72,12 @@ class MaxIoUAssigner(BaseAssigner):
         """
         if bboxes.shape[0] == 0 or gt_bboxes.shape[0] == 0:
             raise ValueError('No gt or bboxes')
+
         
         # https://github.com/open-mmlab/mmdetection/pull/583
         # move the assign operation to cpu
-        if gt_bboxes.shape[0] > 0:
+        # use gt_bboxes nums set threshold, maybe 60 is ok?
+        if gt_bboxes.shape[0] > 60:
             bboxes = bboxes.cpu()
             gt_bboxes = gt_bboxes.cpu()
             if gt_bboxes_ignore is not None:
