@@ -73,7 +73,6 @@ class MaxIoUAssigner(BaseAssigner):
         if bboxes.shape[0] == 0 or gt_bboxes.shape[0] == 0:
             raise ValueError('No gt or bboxes')
 
-        
         # https://github.com/open-mmlab/mmdetection/pull/583
         # move the assign operation to cpu
         # use gt_bboxes nums set threshold, maybe 60 is ok?
@@ -103,7 +102,7 @@ class MaxIoUAssigner(BaseAssigner):
         assign_result = self.assign_wrt_overlaps(overlaps, gt_labels)
 
         # https://github.com/open-mmlab/mmdetection/pull/583
-	    # move the assign results back to cuda		
+        # move the assign results back to cuda		
         assign_result.gt_inds = assign_result.gt_inds.cuda()		
         assign_result.max_overlaps = assign_result.max_overlaps.cuda()		
         if assign_result.labels is not None:		
