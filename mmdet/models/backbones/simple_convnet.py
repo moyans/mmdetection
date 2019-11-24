@@ -11,6 +11,9 @@ from ..utils import ConvModule
 def mish(input):
     return input * torch.tanh(F.softplus(input))
 
+'''
+copyright@ https://github.com/JegernOUTT/mmdetection/blob/master/mmdet/models/backbones/simple_convnet.py
+'''
 
 @BACKBONES.register_module
 class ConvnetLprVehicle(nn.Module):
