@@ -1,7 +1,7 @@
 # model settings
 model = dict(
     type='RPN',
-    pretrained='torchvision://resnet50',
+    pretrained='torchvision://resnet18',
     backbone=dict(
         type='ResNet',
         depth=18,
@@ -123,7 +123,7 @@ log_config = dict(
 total_epochs = 21
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/skudet/skudet_rpn_r50_fpn_2x_191122'
+work_dir = './work_dirs/skudet/skudet_rpn_r18_fpn_2x_191122'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
