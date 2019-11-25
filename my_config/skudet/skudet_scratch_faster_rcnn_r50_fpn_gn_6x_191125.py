@@ -133,8 +133,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    imgs_per_gpu=2,
-    workers_per_gpu=2,
+    imgs_per_gpu=1,
+    workers_per_gpu=1,
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations/instances_SkuDetTrainSetData2019.json',
@@ -153,7 +153,7 @@ data = dict(
 # optimizer
 optimizer = dict(
     type='SGD',
-    lr=0.02,
+    lr=0.01,
     momentum=0.9,
     weight_decay=0.0001,
     paramwise_options=dict(norm_decay_mult=0))
