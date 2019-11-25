@@ -3,7 +3,7 @@ from .resnet import ResNet, make_res_layer
 from .resnext import ResNeXt
 from .ssd_vgg import SSDVGG
 from .efficientnet import EfficientNet
-from .simple_convnet import ConvnetLprVehicle
+from .simple_convnet import ConvnetLprVehicle, ConvnetLprPlate
 from .senet import SENet
 
 # __all__ = ['ResNet', 'make_res_layer', 'ResNeXt', 'SSDVGG', 'HRNet']
