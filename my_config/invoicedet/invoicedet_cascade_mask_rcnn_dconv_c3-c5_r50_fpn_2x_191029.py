@@ -214,21 +214,21 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_InvoiceDetTrainP2Data2019.json',
-        img_prefix=data_root + 'coco_InvoiceDetTrainP2Data2019',
+        ann_file=data_root + 'annotations/instances_InvoiceDet191129TrainData2019.json',
+        img_prefix=data_root + 'coco_InvoiceDet191129Data2019',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_InvoiceDetTrainP2Data2019.json',
-        img_prefix=data_root + 'coco_InvoiceDetTrainP2Data2019',
+        ann_file=data_root + 'annotations/instances_InvoiceDet191129CheckData2019.json',
+        img_prefix=data_root + 'coco_InvoiceDet191129Data2019',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_InvoiceDetTrainP2Data2019.json',
-        img_prefix=data_root + 'coco_InvoiceDetTrainP2Data2019',
+        ann_file=data_root + 'annotations/instances_InvoiceDet191129CheckData2019.json',
+        img_prefix=data_root + 'coco_InvoiceDet191129Data2019',
         pipeline=test_pipeline))
 # optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001) # lr=0.0025 lr=0.02
+optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001) # lr=0.0025 lr=0.02
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
@@ -250,7 +250,7 @@ log_config = dict(
 total_epochs = 21
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/invoicedet/invoicedet_cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_191127'
+work_dir = './work_dirs/invoicedet/invoicedet_cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_191029'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

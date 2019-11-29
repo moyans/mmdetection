@@ -10,8 +10,8 @@ def detectAPI(config, modelfile, gpuid=0):
 def main():
 
     gpuid = 0
-    config = 'work_dirs/skudet/skudet_fcos_r50_caffe_fpn_gn_2x_4gpu_190921/skudet_fcos_r50_caffe_fpn_gn_2x_4gpu_190921.py'
-    modelfile = 'work_dirs/skudet/skudet_fcos_r50_caffe_fpn_gn_2x_4gpu_190921/latest.pth'
+    config = 'work_dirs/skudet/skudet_faster_rcnn_r18_fpn_2x_191124/skudet_faster_rcnn_r18_fpn_2x_191124.py'
+    modelfile = 'work_dirs/skudet/skudet_faster_rcnn_r18_fpn_2x_191124/latest.pth'
 
     detAPI = detectAPI(config, modelfile, gpuid)
 
@@ -26,9 +26,8 @@ def main():
         etime = time.time()
         utime = etime - stime
         alltime += utime
-        # show_result(filePath, result, detAPI.CLASSES)
+        show_result(filePath, result, detAPI.CLASSES)
     print("use time: {}/{}={}".format(alltime, len(imgList), alltime/(len(imgList)*1.)))
-    print
 
 if __name__ == "__main__":
     main()
