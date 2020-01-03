@@ -2,7 +2,7 @@
 input_size = 300
 model = dict(
     type='SingleStageDetector',
-    pretrained='open-mmlab://vgg16_caffe',
+    pretrained='/data/code/mmdetection/mobilenet_v2-6a65762b.pth',
     backbone=dict(
         type='SSDMobilenetV2',
         input_size=input_size,
@@ -84,7 +84,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    imgs_per_gpu=8,
+    imgs_per_gpu=32,
     workers_per_gpu=3,
     train=dict(
         type='RepeatDataset',
