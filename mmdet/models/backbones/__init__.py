@@ -5,11 +5,13 @@ from .ssd_vgg import SSDVGG
 from .efficientnet import EfficientNet
 from .simple_convnet import ConvnetLprVehicle, ConvnetLprPlate
 from .senet import SENet
+from .mobilenetv2 import SSDMobilenetV2
 
 # __all__ = ['ResNet', 'make_res_layer', 'ResNeXt', 'SSDVGG', 'HRNet']
 
 __all__ = ['ResNet', 'make_res_layer', 'ResNeXt', 'SSDVGG', 'HRNet',
-            'EfficientNet', 'ConvnetLprVehicle', 'ConvnetLprPlate', 'SENet']
+            'EfficientNet', 'ConvnetLprVehicle', 'ConvnetLprPlate', 'SENet',
+            'SSDMobilenetV2']
 
 
 '''
