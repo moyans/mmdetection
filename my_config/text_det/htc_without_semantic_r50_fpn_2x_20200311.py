@@ -2,24 +2,16 @@
 model = dict(
     type='HybridTaskCascade',
     num_stages=3,
-    pretrained='open-mmlab://resnext101_64x4d',
+    pretrained='torchvision://resnet50',
     interleaved=True,
     mask_info_flow=True,
     backbone=dict(
-        type='ResNeXt',
-        depth=101,
-        groups=64,
-        base_width=4,
+        type='ResNet',
+        depth=50,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
-        style='pytorch',
-        dcn=dict(
-            modulated=False,
-            groups=64,
-            deformable_groups=1,
-            fallback_on_stride=False),
-        stage_with_dcn=(False, True, True, True)),
+        style='pytorch'),
     neck=dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
@@ -193,20 +185,13 @@ img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(
-        type='LoadAnnotations', with_bbox=True, with_mask=True),
-    dict(
-        type='Resize',
-        img_scale=[(1600, 400), (1600, 1400)],
-        multiscale_mode='range',
-        keep_ratio=True),
+    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+    dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
-    dict(
-        type='Collect',
-        keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks']),
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks']),
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -224,8 +209,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    imgs_per_gpu=1,
-    workers_per_gpu=1,
+    imgs_per_gpu=2,
+    workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         ann_file=[data_root+'annotations/instances_TextRCTWTrainData2019.json', data_root+'annotations/instances_TextReCTSTrainData2019.json', data_root+'annotations/instances_TextMTWITrainData2019.json', data_root+'annotations/instances_TextLSVTTrainData2019.json', data_root+'annotations/instances_TextArtTrainData2019.json'],
@@ -264,7 +249,7 @@ log_config = dict(
 total_epochs = 21
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/text_det/htc_dconv_c3-c5_mstrain_400_1400_x101_64x4d_fpn_20e_200309'
+work_dir = './work_dirs/text_det/htc_without_semantic_r50_fpn_2x_20200311'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
