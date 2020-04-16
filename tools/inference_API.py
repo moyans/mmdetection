@@ -10,16 +10,16 @@ def detectAPI(config, modelfile, gpuid=0):
 def main():
 
     gpuid = 0
-    # config = 'work_dirs/skudet/skudet_faster_rcnn_r18_fpn_2x_191124/skudet_faster_rcnn_r18_fpn_2x_191124.py'
-    # modelfile = 'work_dirs/skudet/skudet_faster_rcnn_r18_fpn_2x_191124/latest.pth'
+    config = 'work_dirs/skudet/skudet_faster_rcnn_r18_fpn_2x_191124/skudet_faster_rcnn_r18_fpn_2x_191124.py'
+    modelfile = 'work_dirs/skudet/skudet_faster_rcnn_r18_fpn_2x_191124/latest.pth'
 
-    config = 'work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect_lsvt_art_mtwi_rctw/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect_lsvt_art_mtwi_rctw.py'
-    modelfile = 'work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect_lsvt_art_mtwi_rctw/epoch_21.pth'
+    # config = 'work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect_lsvt_art_mtwi_rctw/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect_lsvt_art_mtwi_rctw.py'
+    # modelfile = 'work_dirs/text_det/cascade_mask_rcnn_dconv_c3-c5_r50_fpn_2x_rect_lsvt_art_mtwi_rctw/epoch_21.pth'
 
     detAPI = detectAPI(config, modelfile, gpuid)
     class_names = ('3477')
 
-    testDir = '/home/train/桌面/de/JPEGImages/'
+    testDir = '/home/train/Desktop/demo/JPEGImages/'
     imgList = os.listdir(testDir)
     alltime = 0
     for idx, filename in enumerate(imgList):

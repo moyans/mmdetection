@@ -37,7 +37,7 @@ model = dict(
         in_channels=256,
         fc_out_channels=1024,
         roi_feat_size=7,
-        num_classes=3,
+        num_classes=4,
         target_means=[0., 0., 0., 0.],
         target_stds=[0.1, 0.1, 0.2, 0.2],
         reg_class_agnostic=False,
@@ -132,18 +132,18 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_PriceTag2RegionTrainData2019.json',
-        img_prefix=data_root + 'coco_PriceTag2RegionTrainData2019/',
+        ann_file=data_root + 'annotations/instances_SurveyPOSM190823Data2014.json',
+        img_prefix=data_root + 'coco_SurveyPOSM190823Data2014/',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_PriceTag2RegionCheckData2019.json',
-        img_prefix=data_root + 'coco_PriceTag2RegionCheckData2019/',
+        ann_file=data_root + 'annotations/instances_SurveyPOSM190823CheckData2014.json',
+        img_prefix=data_root + 'coco_SurveyPOSM190823CheckData2014/',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_PriceTag2RegionCheckData2019.json',
-        img_prefix=data_root + 'coco_PriceTag2RegionCheckData2019/',
+        ann_file=data_root + 'annotations/instances_SurveyPOSM190823CheckData2014.json',
+        img_prefix=data_root + 'coco_SurveyPOSM190823CheckData2014/',
         pipeline=test_pipeline))
 # optimizer
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
@@ -154,7 +154,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=1.0 / 3,
-    step=[16, 19])
+    step=[8, 11])
 checkpoint_config = dict(interval=1)
 # yapf:disable
 log_config = dict(
@@ -165,10 +165,10 @@ log_config = dict(
     ])
 # yapf:enable
 # runtime settings
-total_epochs = 21
+total_epochs = 12
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/pricetag/pricet2det_faster_rcnn_r50_fpn_2x_191127'
+work_dir = './work_dirs/posmtest/posmtest_faster_rcnn_r50_fpn_1x_200416'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]

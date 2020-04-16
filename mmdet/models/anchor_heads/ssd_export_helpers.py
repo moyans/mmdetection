@@ -50,6 +50,11 @@ def get_bboxes_single(cls_scores, bbox_preds, priors, img_shape, scale_factor,
         cls_scores = torch.cat([padding, cls_scores], dim=1)
     det_bboxes, det_labels = multiclass_nms(
         mlvl_bboxes, cls_scores, cfg.score_thr, cfg.nms, cfg.max_per_img)
+    
+
+    # det_bboxes, det_labels = multiclass_nms(
+    #     mlvl_bboxes, cls_scores, cfg['score_thr'], cfg['nms'], cfg['max_per_img'])
+
     return det_bboxes, det_labels
 
 
